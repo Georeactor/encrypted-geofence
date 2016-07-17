@@ -1,0 +1,9 @@
+html, body {
+  margin: 0;
+  padding: 20px;
+  font-family: arial, sans-serif;
+}
+
+#encryptlat, #encryptlng {
+  font-size: 8pt;
+}

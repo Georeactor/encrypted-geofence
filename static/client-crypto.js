@@ -1,7 +1,9 @@
+/* JSBN and PaillierJS licensed under their own respective open source licenses */
+
 var phe = {};
 
 (function(){
-    
+
     // Copyright (c) 2005  Tom Wu
     // All Rights Reserved.
     // See "LICENSE" for details.
@@ -1224,7 +1226,7 @@ var phe = {};
     } else {
         this.BigInteger = BigInteger;
     }
-    
+
 }).call(this);
 
 /**

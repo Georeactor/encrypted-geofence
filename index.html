@@ -3,17 +3,7 @@
   <head>
     <meta charset="utf-8"/>
     <title>Crypto GeoFence</title>
-    <style>
-html, body {
-  margin: 0;
-  padding: 20px;
-  font-family: arial, sans-serif;
-}
-
-#encryptlat, #encryptlng {
-  font-size: 8pt;
-}
-    </style>
+    <link rel="stylesheet" href="static/style.css"/>
   </head>
   <body>
     <h3>Crypto GeoFence</h3>
@@ -32,39 +22,7 @@ html, body {
     </ol>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-    <script src="/clientlib"></script>
-    <script>
-  var kp = phe.generate_paillier_keypair(128);
-  $('#key').text(JSON.stringify(kp.public_key));
-
-  $('button').prop('disabled', false).click(function(e) {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(function(position) {
-        var latitude = Math.round(position.coords.latitude * 1000);
-        var longitude = Math.round(position.coords.longitude * 1000);
-        $('#clientgeo').text((latitude / 1000) + ', ' + (longitude / 1000));
-        latitude = kp.public_key.raw_encrypt(latitude + '');
-        longitude = kp.public_key.raw_encrypt(longitude + '');
-
-        $('#encryptlat').text(latitude);
-        $('#encryptlng').text(longitude);
-
-        $.get('/calculate', {
-          g: kp.public_key.g.toString(),
-          n: kp.public_key.n.toString(),
-          lat: latitude.toString(),
-          lng: longitude.toString()
-        }, function (response) {
-          console.log(response);
-        });
-      },
-      function (error) {
-        alert('Error: ' + JSON.stringify(error));
-      });
-    } else {
-      alert('geolocation not possible');
-    }
-  });
-    </script>
+    <script src="/static/client-crypto.js"></script>
+    <script src="/static/client-ui.js"></script>
   </body>
 </html>

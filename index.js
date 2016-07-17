@@ -2,19 +2,6 @@ const fs = require('fs');
 const bn = require('jsbn');
 const phe = require('homomorphicjs');
 
-// generate key if it doesn't exist
-var key;
-try {
-  key = require('./key.json');
-} catch(e) {
-  key = phe.generate_paillier_keypair(128);
-  fs.writeFile('./key.json', JSON.stringify(key), function (err) {
-    if (err) {
-      throw err;
-    }
-  });
-}
-
 module.exports = function (box, g, n, lat, lng, callback) {
   console.log(g);
   console.log(n);
@@ -35,7 +22,7 @@ module.exports = function (box, g, n, lat, lng, callback) {
   ymax = public_key.raw_encrupt(ymax);
 
   console.log('encrypted box');
- 
+
   var lat = new bn(lat);
   var latoffset1 = lat.subtract(ymin);
   var latoffset2 = lat.subtract(ymax);
@@ -43,7 +30,7 @@ module.exports = function (box, g, n, lat, lng, callback) {
   var lng = new bn(lng);
   var lngoffset1 = lat.subtract(xmin);
   var lngoffset2 = lat.subtract(xmax);
- 
+
   callback(null, {
     lat: [latoffset1, latoffset2],
     lng: [lngoffset1, lngoffset2]
