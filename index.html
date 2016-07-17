@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>Crypto GeoFence</title>
+    <style>
+html, body {
+  margin: 0;
+  padding: 20px;
+  font-family: arial, sans-serif;
+}
+
+#encryptlat, #encryptlng {
+  font-size: 8pt;
+}
+    </style>
+  </head>
+  <body>
+    <h3>Crypto GeoFence</h3>
+    <button id="geo" disabled="disabled">Share Location</button>
+    <p>Your location will be submitted to the secret geo fence processor.</p>
+    <p>By encrypting your location, the server will not know your location, or if you are inside the geofence.</p>
+    <p>The server does run math on the coordinates and allows you to decrypt the result: whether you are in the geofence or not.</p>
+
+    <hr/>
+    <ol>
+      <li>Generate public key: <span id="key"></span></li>
+      <li>Client geolocation: <span id="clientgeo"></span></li>
+      <li>Encrypted lat/lng: <div id="encryptlat"></div><div id="encryptlng"></div></li>
+      <li>Server response: <span id="response"></span></li>
+      <li>Decrypted result: <span id="result"></span></li>
+    </ol>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="/clientlib"></script>
+    <script>
+  var kp = phe.generate_paillier_keypair(128);
+  $('#key').text(JSON.stringify(kp.public_key));
+
+  $('button').prop('disabled', false).click(function(e) {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        var latitude = Math.round(position.coords.latitude * 1000);
+        var longitude = Math.round(position.coords.longitude * 1000);
+        $('#clientgeo').text((latitude / 1000) + ', ' + (longitude / 1000));
+        latitude = kp.public_key.raw_encrypt(latitude + '');
+        longitude = kp.public_key.raw_encrypt(longitude + '');
+
+        $('#encryptlat').text(latitude);
+        $('#encryptlng').text(longitude);
+
+        $.get('/calculate', {
+          g: kp.public_key.g.toString(),
+          n: kp.public_key.n.toString(),
+          lat: latitude.toString(),
+          lng: longitude.toString()
+        }, function (response) {
+          console.log(response);
+        });
+      },
+      function (error) {
+        alert('Error: ' + JSON.stringify(error));
+      });
+    } else {
+      alert('geolocation not possible');
+    }
+  });
+    </script>
+  </body>
+</html>

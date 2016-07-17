@@ -1,0 +1,22 @@
+{
+  "name": "crypto-geofence",
+  "version": "1.0.0",
+  "description": "Use homomorphic encryption to hide client geolocation and server geofence",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Georeactor/crypto-geofence.git"
+  },
+  "author": "Nick Doiron <ndoiron@mapmeld.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Georeactor/crypto-geofence/issues"
+  },
+  "homepage": "https://github.com/Georeactor/crypto-geofence#readme",
+  "dependencies": {
+    "homomorphicjs": "^1.1.2"
+  }
+}
