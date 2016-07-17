@@ -6,4 +6,6 @@ html, body {
 
 #encryptlat, #encryptlng, #response {
   font-size: 8pt;
+  word-wrap: break-word;
+  word-break: break-word;
 }
