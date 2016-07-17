@@ -4,6 +4,7 @@ import os, re, json
 import flask
 from flask import request
 from phe import paillier
+from random import random
 
 app = flask.Flask(__name__)
 
@@ -35,10 +36,10 @@ def calculate_geo():
     east = pubkey.encrypt(geobox[2])
     north = pubkey.encrypt(geobox[3])
 
-    latoffset = (south - lat)
-    latoffset2 = (north - lat)
-    lngoffset = (west - lng)
-    lngoffset2 = (east - lng)
+    latoffset = (south - lat) * random()
+    latoffset2 = (north - lat) * random()
+    lngoffset = (west - lng) * random()
+    lngoffset2 = (east - lng) * random()
 
     return json.dumps({
       "lat": str(latoffset.ciphertext()),
