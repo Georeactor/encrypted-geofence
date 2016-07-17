@@ -4,6 +4,6 @@ html, body {
   font-family: arial, sans-serif;
 }
 
-#encryptlat, #encryptlng {
+#encryptlat, #encryptlng, #response {
   font-size: 8pt;
 }
