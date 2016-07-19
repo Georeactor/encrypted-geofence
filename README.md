@@ -6,7 +6,7 @@ the server, and without the server giving me the true geofence?
 ## What is homomorphic encryption?
 
 <a href="https://en.wikipedia.org/wiki/Homomorphic_encryption">Homomorphic encryption</a> is a new technique where you can perform arithmetic operations on
-encrypted numbers.  It's possible with a few different algorithms, including the AES-based one
+encrypted numbers.  It's possible with a few different algorithms, including the factoring-based one
 used here (Paillier).  In the future it might be better to use a quantum-resistent algorithm
 based on lattice cryptography.
 
