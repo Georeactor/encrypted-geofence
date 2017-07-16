@@ -8,18 +8,23 @@ fourths = 0
 
 while p < 10000:
     p = p + 1
-    x = random.randint(0, 360)
-    y = random.randint(0, 180)
+    x = random.randint(1, 360)
+    y = random.randint(1, 180)
     # print(str(x) + ', ' + str(y))
 
     p2 = 0
     distpts = []
     while p2 < 50:
-        x2 = random.randint(0, 360)
-        y2 = random.randint(0, 180)
+        # nearby test
+        x2 = x + random.random() / 5 - 0.1
+        y2 = y + random.random() / 5 - 0.1
+        # whole world test
+        x2 = random.randint(1, 360)
+        y2 = random.randint(1, 180)
+
         truedist = (x2 - x) * (x2 - x) + (y2 - y) * (y2 - y)
-        fakedist = (7 * x2 + y2) * (7 * x2 + y2)
-        fakedist = fakedist / (7 * x + y) / (7 * x + y)
+        fakedist = (x2 * y2 * x * y)
+        fakedist = fakedist / (x * x * y * y)
         distpts.append({ "point": [x2, y2], "p2": p2, "td": truedist, "fd": fakedist })
         p2 = p2 + 1
 
