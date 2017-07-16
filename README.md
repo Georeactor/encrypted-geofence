@@ -20,21 +20,21 @@ Encrypted coordinates and the public key are POSTed to the server
 Originally I was hoping to find if you were in the box by testing this:
 
 ```python
-inlat = (north - latitude) * (south-latitude)
+latitude_offset = (north - latitude) * (south-latitude)
 ```
 
 The number would be negative for ```south < latitude < north```, and positive in any other
 condition.  It would also be difficult to find north and south by factoring the result.
-Unfortunately, multiplying encrypting numbers is not yet possible in Paillier Python
-library.  I got this funny error:
+Unfortunately, multiplying encrypting numbers is not possible in the Paillier
+cryptosystem.  I got this funny error:
 
 <img src="http://i.imgur.com/Hipe0LB.png"/>
 
-Anyway, you can get the same result by processing
+Anyway, you can obfuscate offsets by multiplying by a random scalar instead:
 
 ```python
-offset1 = (north - latitude) * random()
-offset2 = (south - latitude) * random()
+north_offset = (north - latitude) * random()
+south_offset = (south - latitude) * random()
 ```
 
 One of the offsets should be positive and the other negative, but the random factor makes
@@ -43,12 +43,14 @@ this could make your fence exta-secret.
 
 ### Going forward
 
-I would like to calculate geofences for more complex shapes, but it doesn't look possible
-to use the traditional point-in-polygon algorithm without knowing the actual coordinates!
+I would like to:
+
+- calculate geofences for more complex shapes, by breaking them into rectangles or triangles
+- calculate distance, using a different cryptosystem which allows multiplication
 
 ## Libraries used
 
-Using <a href="https://github.com/hardbyte/paillier.js">homomorphicjs</a> on the client,
+Using Brian Thorne's <a href="https://github.com/hardbyte/paillier.js">homomorphicjs</a> on the client,
 and Australia NICTA's <a href="https://github.com/NICTA/python-paillier">Python-Paillier</a>
 on the server
 
