@@ -1,5 +1,7 @@
 # crypto-geofence
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/Georeactor/crypto-geofence.svg)](https://greenkeeper.io/)
+
 Is it possible for me to check if I'm inside a geofence, without revealing my location to
 the server, and without the server giving me the true geofence?
 
