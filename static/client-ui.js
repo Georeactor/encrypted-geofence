@@ -1,4 +1,4 @@
-var kp = phe.generate_paillier_keypair(128);
+var kp = phe.generate_paillier_keypair(1024);
 $('#key').text(JSON.stringify(kp.public_key));
 
 $('button').prop('disabled', false).click(function(e) {
@@ -6,6 +6,10 @@ $('button').prop('disabled', false).click(function(e) {
     navigator.geolocation.getCurrentPosition(function(position) {
       var latitude = Math.round(position.coords.latitude * 1000);
       var longitude = Math.round(position.coords.longitude * 1000);
+
+      latitude = Math.round(39.7645183 * 1000);
+      longitude = Math.round(-104.9955397 * 1000);
+
       $('#clientgeo').text((latitude / 1000) + ', ' + (longitude / 1000));
       latitude = kp.public_key.raw_encrypt((latitude + 90000) + '');
       longitude = kp.public_key.raw_encrypt((longitude + 180000) + '');
@@ -27,8 +31,8 @@ $('button').prop('disabled', false).click(function(e) {
         var lng1 = kp.private_key.raw_decrypt(response.lng);
         var lng2 = kp.private_key.raw_decrypt(response.lng2);
 
-        var ymatch = (Math.log(lat1) > 50 && Math.log(lat2) < 50) || (Math.log(lat1) < 50 && Math.log(lat2 > 50));
-        var xmatch = (Math.log(lng1) > 50 && Math.log(lng2) < 50) || (Math.log(lng1) < 50 && Math.log(lng2 > 50));
+        var ymatch = (Math.log(lat1) > 50 && Math.log(lat2) < 50) || (Math.log(lat1) < 50 && Math.log(lat2) > 50);
+        var xmatch = (Math.log(lng1) > 50 && Math.log(lng2) < 50) || (Math.log(lng1) < 50 && Math.log(lng2) > 50);
 
         var gotit = '';
         if (xmatch && ymatch) {
