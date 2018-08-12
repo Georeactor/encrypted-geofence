@@ -7,9 +7,6 @@ $('button').prop('disabled', false).click(function(e) {
       var latitude = Math.round(position.coords.latitude * 1000);
       var longitude = Math.round(position.coords.longitude * 1000);
 
-      latitude = Math.round(39.7645183 * 1000);
-      longitude = Math.round(-104.9955397 * 1000);
-
       $('#clientgeo').text((latitude / 1000) + ', ' + (longitude / 1000));
       latitude = kp.public_key.raw_encrypt((latitude + 90000) + '');
       longitude = kp.public_key.raw_encrypt((longitude + 180000) + '');
