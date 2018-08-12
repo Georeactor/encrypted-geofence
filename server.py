@@ -24,7 +24,8 @@ def calculate_geo():
     # rebuild public key
     g = int(request.args.get('g'))
     n = int(request.args.get('n'))
-    pubkey = paillier.PaillierPublicKey(g=g, n=n)
+    # g is n+1 on both sides
+    pubkey = paillier.PaillierPublicKey(n=n)
 
     # load the coordinates as EncryptedNumber type
     lat = paillier.EncryptedNumber(pubkey, int(request.args.get('lat')))
