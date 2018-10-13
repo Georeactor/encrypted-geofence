@@ -28,10 +28,8 @@ $('button').prop('disabled', false).click(function(e) {
         var lng1 = kp.private_key.raw_decrypt(response.lng);
         var lng2 = kp.private_key.raw_decrypt(response.lng2);
 
-        var ymatch = (lat1 < 0 && lat2 > 0)
-        var xmatch = (lng1 < 0 && lng2 > 0)
-        //var ymatch = (Math.log(lat1) > 50 && Math.log(lat2) < 50) || (Math.log(lat1) < 50 && Math.log(lat2) > 50);
-        //var xmatch = (Math.log(lng1) > 50 && Math.log(lng2) < 50) || (Math.log(lng1) < 50 && Math.log(lng2) > 50);
+        var ymatch = (Math.log(lat1) > 50 && Math.log(lat2) < 50) || (Math.log(lat1) < 50 && Math.log(lat2) > 50);
+        var xmatch = (Math.log(lng1) > 50 && Math.log(lng2) < 50) || (Math.log(lng1) < 50 && Math.log(lng2) > 50);
 
         var gotit = '';
         if (xmatch && ymatch) {
