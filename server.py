@@ -13,7 +13,7 @@ app = flask.Flask(__name__)
 # deg * 1000 units
 # add 90 deg to north/south
 # add 180 deg to east/west
-geobox = [-102052 + 180000, 36971 + 90000, -109190 + 180000, 41010 + 90000]
+geobox = [-109190 + 180000, 36971 + 90000, -102052 + 180000, 41010 + 90000]
 
 @app.route('/')
 def print_index():
