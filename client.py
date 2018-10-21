@@ -25,6 +25,7 @@ def normalize_deg_y(deg):
     return round((deg+180)*10**decimal_places)
 
 def evaluate_response(public_key, private_key, response):
+    print('  evaluation of aligned geofence')
     # rebuild the encrypted numbers with our public key
     data = response.json()
     e_south_border_distance = paillier.EncryptedNumber(public_key, int(data['lat']))
@@ -43,13 +44,13 @@ def evaluate_response(public_key, private_key, response):
     match_y = north_border_distance >= 0 and south_border_distance <= 0
 
     if match_x and match_y:
-        print('Position is in Colorado')
+        print('    Position is in Colorado')
     elif match_x:
-        print('Position is in between longitude boundaries')
+        print('    Position is in between longitude boundaries')
     elif match_y:
-        print('Position is in between latitude boundaries')
+        print('    Position is in between latitude boundaries')
     else:
-        print('Position is elsewhere')
+        print('    Position is elsewhere')
 
 def send_to_server(x, y, public_key):
     encrypted_lat = public_key.encrypt(normalize_deg_x(x))
@@ -57,7 +58,6 @@ def send_to_server(x, y, public_key):
     return requests.get("http://127.0.0.1:5000/calculate?g="+str(public_key.g)+"&n="+str(public_key.n)+"&lat="+str(encrypted_lat.ciphertext())+"&lng="+str(encrypted_lng.ciphertext()))
 
 if __name__ == '__main__':
-    # generate a small paillier keypair
     public_key, private_key = paillier.generate_paillier_keypair(n_length=1024)
     print('testing position outside all boundaries')
     response_outside = send_to_server(outside_all_boundaries_x, outside_all_boundaries_y, public_key)
