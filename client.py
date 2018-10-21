@@ -52,29 +52,66 @@ def evaluate_response(public_key, private_key, response):
     else:
         print('    Position is elsewhere')
 
+def evaluate_response_rotated(public_key, private_key, response):
+    print('  evaluation of rotated geofence')
+    data = response.json()
+    e_AP_dot_AB = paillier.EncryptedNumber(public_key, int(data['e_AP_dot_AB']))
+    e_AP_dot_AD = paillier.EncryptedNumber(public_key, int(data['e_AP_dot_AD']))
+    AP_dot_AB = private_key.decrypt(e_AP_dot_AB)
+    AP_dot_AD = private_key.decrypt(e_AP_dot_AD)
+
+    sq_AB = int(data['sq_AB'])
+    sq_AD = int(data['sq_AD'])
+
+    border1_match = (0 <= AP_dot_AB <= sq_AB)
+    border2_match = (0 <= AP_dot_AD <= sq_AD)
+
+    if border1_match and border2_match:
+        print('    Position is in Colorado')
+    elif border1_match:
+        print('    Position is inside one of the borders (border1)')
+    elif border2_match:
+        print('    Position is inside one of the borders (border2)')
+    else:
+        print('    Position is ouside Colorado')
+
+
 def send_to_server(x, y, public_key):
     encrypted_lat = public_key.encrypt(normalize_deg_x(x))
     encrypted_lng = public_key.encrypt(normalize_deg_y(y))
     return requests.get("http://127.0.0.1:5000/calculate?g="+str(public_key.g)+"&n="+str(public_key.n)+"&lat="+str(encrypted_lat.ciphertext())+"&lng="+str(encrypted_lng.ciphertext()))
+
+def send_to_server_rotated(x, y, public_key):
+    encrypted_lat = public_key.encrypt(normalize_deg_x(x))
+    encrypted_lng = public_key.encrypt(normalize_deg_y(y))
+    return requests.get("http://127.0.0.1:5000/calculate_rotated?g="+str(public_key.g)+"&n="+str(public_key.n)+"&lat="+str(encrypted_lat.ciphertext())+"&lng="+str(encrypted_lng.ciphertext()))
 
 if __name__ == '__main__':
     public_key, private_key = paillier.generate_paillier_keypair(n_length=1024)
     print('testing position outside all boundaries')
     response_outside = send_to_server(outside_all_boundaries_x, outside_all_boundaries_y, public_key)
     evaluate_response(public_key, private_key, response_outside)
+    response_outside2 = send_to_server_rotated(outside_all_boundaries_x, outside_all_boundaries_y, public_key)
+    evaluate_response_rotated(public_key, private_key, response_outside2)
     print('')
 
     print('testing position inside x boundaries')
     response_inside_x = send_to_server(inside_x_boundaries_x, inside_x_boundaries_y, public_key)
     evaluate_response(public_key, private_key, response_inside_x)
+    response_inside_x2 = send_to_server_rotated(inside_x_boundaries_x, inside_x_boundaries_y, public_key)
+    evaluate_response_rotated(public_key, private_key, response_inside_x2)
     print('')
 
     print('testing position inside y boundaries')
     response_inside_y = send_to_server(inside_y_boundaries_x, inside_y_boundaries_y, public_key)
     evaluate_response(public_key, private_key, response_inside_y)
+    response_inside_y2 = send_to_server_rotated(inside_y_boundaries_x, inside_y_boundaries_y, public_key)
+    evaluate_response_rotated(public_key, private_key, response_inside_y2)
     print('')
 
     print('testing position inside colorado')
     response_inside = send_to_server(inside_colorado_x, inside_colorado_y, public_key)
     evaluate_response(public_key, private_key, response_inside)
+    response_inside2 = send_to_server_rotated(inside_colorado_x, inside_colorado_y, public_key)
+    evaluate_response_rotated(public_key, private_key, response_inside2)
 
