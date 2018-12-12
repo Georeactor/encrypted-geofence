@@ -3,6 +3,8 @@
 Is it possible for me to check if I'm inside a geofence, without revealing my location to
 the server, and without the server giving me the true geofence?
 
+Video at DEF-CON Crypto & Privacy Village 2018: https://www.youtube.com/watch?v=ySl2ywGiFkw
+
 ## What is homomorphic encryption?
 
 <a href="https://en.wikipedia.org/wiki/Homomorphic_encryption">Homomorphic encryption</a> is a new technique where you can perform arithmetic operations on
